@@ -11,6 +11,7 @@ draft: false
 *note that this tutorial need some knowlage of **Scala implicits**. If you are not fimilier with this concept, please refer to my other blog posts to take some twitch before start reading this blog post*
 
 ---
+> qoute: This post codes will capable with `Scala 2.3.*` and `Scala 3.*`
 
 Overral explanation for type classes in Scala is that adding new functionality to a type that will not expected other types have that 
 functionality.
@@ -23,11 +24,13 @@ Here we have a class hierachy:
 trait Animal {
     def makeSound: String
 }
-class Dog(name: String) extends Animal {
-    override def makeSound = s"$name dog is makeing Weeeeeew sound!"
+
+class Dog(val name: String) extends Animal {
+    override def makeSound: String = s"$name dog is making Weeeeeew sound!"
 }
+
 class Cat(name: String) extends Animal {
-    override def makeSound = s"$name cat is makeing Meeeeow sound!"
+    override def makeSound: String = s"$name cat is making Meeeeow sound!"
 }
  ```
 here `Cat` and `Dog` classes are both extends `Animal` trait, which means both inherit `makeSound` method from `Animal`.
@@ -45,24 +48,63 @@ What do I mean? \
 Step 1:
 ```scala
 trait GuardCapability[A] {
-    def guarding(value: A): String // A trait that has typed with 'A' and 'value' with type A
+    def guarding(animal: A): String
 }
 ```
 
 Step 2:
 As a best practice it's better to bring our code instances in a singleton object for better code formatting and also as what [**Scala Cats**](https://typelevel.org/cats/) library has been implemented.
 ```scala
-object GuradInstances {
+object GuardInstances {
     implicit object DogGuard extends GuardCapability[Dog] {
-        def guarding(dog: Dog): String = s"Dog with name ${dog.name} is guarding..."
+        override def guarding(animal: Dog): String = s"Dog with name ${animal.name} guards his owner."
     }
 }
 ```
 
 Step 3:
+What **Cats Library** has done is that all the objects that access to the type class is centralized in syntax object. So, I here, do the same thing. Although there are several way to impliment type class *service layer* (what I call that), So we focus on the way on mentioned:
+```scala
+object GuradSyntax {
+  object GuardSyntax {
+    implicit class GuardOps[A](value: A) {
+      def guard(implicit g: GuardCapability[A]): String = g.guarding(value)
+    }
+}
+```
 
-*to be countinue...*
+To test the code that we wrote, we define two instances of two `Cat` and `Dog` class. Then it shows that the capabilty of guarding for `Dog` will shows result but it will thorows an exception for `Cat` class instance.
 
+```scala
+def main(args: Array[String]): Unit = {
+    import GuardInstances._
+    import GuardSyntax._
 
+    val teddy = new Dog("Teddy")
+    val kitty = new Cat("Kitty")
+
+    println(teddy.guard)
+    // println(kitty.guard) --> // this will throw an exception
+}
+```
+
+The output:
+
+```
+# Dog with name Teddy guards his owner.
+```
+
+Notice that those two lines of code:
+```scala
+import GuardInstances._
+import GuardSyntax._
+```
+
+by importing these two lines, we tell the compiler to bring all the implicit objects and classes into the scope.
+I will explain more about `implicits` and implicit scopes in the future but now the thing that is mentionable, is that we should import objects that have been contains **implicits**.
+
+Type classes are very tremendous subject in Scala programming language and are very useful tools to develop applications. 
+With that said, It needs more time and practice to get comftable with.\
+In future posts, I will take more time to explain type classes and we will write more codes to get fimilier with that topic.
 
 
