@@ -12,6 +12,7 @@ theme = "FeelIt"
   # FeelIt theme version
   version = "1.0.X"
 
+
 [menu]
   [[menu.main]]
     identifier = "posts"
