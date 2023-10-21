@@ -60,12 +60,12 @@ theme = "FeelIt"
     lightgallery = false
     ruby = true
     linkToMarkdown = false
-    fraction = true
+    fraction = false
 
     [params.page.toc]
       enable = true
-      keepStatic = true
-      auto = true
+      keepStatic = false
+      auto = false
 
     [params.page.code]
       maxShownLines = 10
