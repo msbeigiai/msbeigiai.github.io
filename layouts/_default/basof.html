@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html {{ with site.Language.Lang }}lang="{{ . }}" {{ end }}>
+  {{ partial "meta" . }}
+  <body class="site">
+    {{ partial "aside" . }} {{ partial "navigation" . }} {{ block "main" . }}{{
+    end }} {{ partial "footer" . }}
+  </body>
+</html>

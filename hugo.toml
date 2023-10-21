@@ -11,6 +11,13 @@ theme = "FeelIt"
 [params]
   # FeelIt theme version
   version = "1.0.X"
+  [params.footer]
+    enable = true
+    custom = '<p>Mohsen Sadeghbeigi</p>'
+    copyright = true
+    author = true
+    since = 2021
+    hugo = false
 
 
 [menu]
