@@ -87,3 +87,13 @@ theme = "FeelIt"
   [params.page.seo]
     [params.page.seo.publisher]
       name = "Mohsen Sadeghbeigi"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
+
+[markup.goldmark]
